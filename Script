@@ -1,0 +1,48 @@
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from langchain_community.document_loaders import PyPDFLoader
+from docx import Document
+import nltk
+
+
+import nltk
+nltk.download('punkt')
+
+
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+# Load the PDF file
+loader = PyPDFLoader("Resume.pdf")
+
+# Load the pages
+pages = loader.load()
+
+# Concatenate the text from all paragraphs into a single string
+document1 = ""
+for page in pages:
+    document1 += page.page_content + " "
+
+document2 = "job description"
+
+
+# Tokenize the documents
+tokens1 = word_tokenize(document1.lower())  # Convert to lowercase for case-insensitive comparison
+tokens2 = word_tokenize(document2.lower())
+
+# Remove stopwords
+stop_words = set(stopwords.words("english"))
+filtered_tokens1 = [word for word in tokens1 if word not in stop_words]
+filtered_tokens2 = [word for word in tokens2 if word not in stop_words]
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens1 = [lemmatizer.lemmatize(word) for word in filtered_tokens1]
+lemmatized_tokens2 = [lemmatizer.lemmatize(word) for word in filtered_tokens2]
+
+# Calculate similarity score
+common_tokens = set(lemmatized_tokens1).intersection(set(lemmatized_tokens2))
+similarity_score = len(common_tokens) / (len(set(lemmatized_tokens1)) + len(set(lemmatized_tokens2)))
+
+print("Similarity Score:",similarity_score)
