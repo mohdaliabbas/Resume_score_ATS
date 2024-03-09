@@ -31,8 +31,7 @@ document2 = "job description"
 tokens1 = word_tokenize(document1.lower())  # Convert to lowercase for case-insensitive comparison
 tokens2 = word_tokenize(document2.lower())
 
-# Remove stopwords
-stop_words = set(stopwords.words("english"))
+stop_words = set(stopwords.words())
 filtered_tokens1 = [word for word in tokens1 if word not in stop_words]
 filtered_tokens2 = [word for word in tokens2 if word not in stop_words]
 
